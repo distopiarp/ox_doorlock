@@ -52,7 +52,7 @@ end
 
 local function getDoor(door)
 	door = type(door) == 'table' and door or doors[door]
-
+	if not door then return false end
 	return {
 		id = door.id,
 		name = door.name,
@@ -66,6 +66,16 @@ local function getDoor(door)
 end
 
 exports('getDoor', getDoor)
+
+exports('getAllDoors', function()
+	local allDoors = {}
+
+	for _, door in pairs(doors) do
+		allDoors[#allDoors+1] = getDoor(door)
+	end
+
+	return allDoors
+end)
 
 exports('getDoorFromName', function(name)
 	for _, door in pairs(doors) do
@@ -242,6 +252,8 @@ MySQL.ready(function()
 	end
 
 	isLoaded = true
+
+	TriggerEvent('ox_doorlock:loaded')
 end)
 
 ---@param id number
