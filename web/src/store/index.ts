@@ -11,6 +11,7 @@ export interface StoreState {
   items: { name: StringField; metadata?: StringField; remove: boolean | null }[];
   characters: StringField[];
   groups: { name: StringField; grade: NumberField }[];
+  reputation: { name: StringField; min: NumberField }[];
   maxDistance: NumberField;
   doorRate: NumberField;
   lockSound: StringField;
@@ -35,6 +36,7 @@ interface StateSetters {
   setItems: (fn: (state: StoreState['items']) => StoreState['items']) => void;
   setCharacters: (fn: (state: StoreState['characters']) => StoreState['characters']) => void;
   setGroups: (fn: (state: StoreState['groups']) => StoreState['groups']) => void;
+  setReputation: (fn: (state: StoreState['reputation']) => StoreState['reputation']) => void;
   setLockpickDifficulty: (fn: (state: StoreState['lockpickDifficulty']) => StoreState['lockpickDifficulty']) => void;
   toggleCheckbox: (type: 'state' | 'doors' | 'auto' | 'lockpick' | 'hideUi' | 'holdOpen') => void;
   setMaxDistance: (value: StoreState['maxDistance']) => void;
@@ -48,6 +50,7 @@ export const useStore = create<StoreState>(() => ({
   items: [{ name: '', metadata: '', remove: false }],
   characters: [''],
   groups: [{ name: '', grade: undefined }],
+  reputation: [{ name: '', min: undefined }],
   lockpickDifficulty: [''],
   maxDistance: 0,
   doorRate: 0,
@@ -84,6 +87,10 @@ export const useSetters = create<StateSetters>((set: SetState<StateSetters>, get
   setGroups: (fn) =>
     useStore.setState(({ groups: groupFields }) => ({
       groups: fn(groupFields),
+    })),
+  setReputation: (fn) =>
+    useStore.setState(({ reputation: reputationFields }) => ({
+      reputation: fn(reputationFields),
     })),
   setLockpickDifficulty: (fn) =>
     useStore.setState(({ lockpickDifficulty: difficultyFields }) => ({

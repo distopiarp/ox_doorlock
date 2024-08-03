@@ -126,6 +126,10 @@ RegisterNUICallback('createDoor', function(data, cb)
 		data.groups = nil
 	end
 
+	if data.reputation and not next(data.reputation) then
+		data.reputation = nil
+	end
+
 	if not data.id then
 		isAddingDoorlock = true
 		local doorCount = data.doors and 2 or 1

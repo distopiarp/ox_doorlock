@@ -70,6 +70,19 @@ const Submit: React.FC = () => {
     } // @ts-ignore
     else data.groups = null;
 
+    if (data.reputation && data.reputation.length > 0) {
+      const repObj: { [key: string]: number } = {};
+
+      for (let i = 0; i < data.reputation.length; i++) {
+        const repField = data.reputation[i];
+        if (repField.name && repField.name !== '') repObj[repField.name] = repField.min || 1;
+      }
+
+      // @ts-ignore
+      data.reputation = repObj;
+    } // @ts-ignore
+    else data.reputation = null;
+
     if (data.lockpickDifficulty && data.lockpickDifficulty.length > 0) {
       const lockpickArr = [];
       for (let i = 0; i < data.lockpickDifficulty.length; i++) {
