@@ -270,11 +270,6 @@ CreateThread(function()
 			ox = true,
 			exp = exports.ox_target
 		}
-	elseif GetResourceState('qb-target'):find('start') then
-		target = {
-			qb = true,
-			exp = exports['qb-target']
-		}
 	elseif GetResourceState('qtarget'):find('start') then
 		target = {
 			qt = true,
@@ -313,8 +308,6 @@ CreateThread(function()
 
 		if target.qt then
 			target.exp:Object({ options = options })
-		elseif target.qb then
-			target.exp:AddGlobalObject({ options = options })
 		end
 
 		options = { locale('pick_lock') }
@@ -323,10 +316,6 @@ CreateThread(function()
 			if resource == cache.resource then
 				if target.qt then
 					return target.exp:RemoveObject(options)
-				end
-
-				if target.qb then
-					return target.exp:RemoveGlobalObject(options)
 				end
 			end
 		end)
