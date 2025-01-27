@@ -71,7 +71,7 @@ exports('getAllDoors', function()
 	local allDoors = {}
 
 	for _, door in pairs(doors) do
-		allDoors[#allDoors+1] = getDoor(door)
+		allDoors[#allDoors + 1] = getDoor(door)
 	end
 
 	return allDoors
@@ -305,6 +305,27 @@ lib.callback.register('ox_doorlock:getDoors', function()
 	while not isLoaded do Wait(100) end
 
 	return doors, sounds
+end)
+
+function GetNameFromDoor(name)
+	local results = MySQL.query.await('SELECT * FROM ox_doorlock WHERE name LIKE ?', { '%' .. name .. '%' })
+	if results and #results > 0 then
+		return results
+	end
+	return nil
+end
+
+RegisterNetEvent('ox_doorlock:RemoveDoorlock', function(name)
+	local doorData = GetNameFromDoor(name)
+
+	if doorData and #doorData > 0 then
+		for _, door in ipairs(doorData) do
+			MySQL.update('DELETE FROM ox_doorlock WHERE id = ?', { door.id })
+			TriggerClientEvent('ox_doorlock:editDoorlock', -1, door.id, nil)
+		end
+	else
+		print('No doors found with the name:', name)
+	end
 end)
 
 RegisterNetEvent('ox_doorlock:editDoorlock', function(id, data)
